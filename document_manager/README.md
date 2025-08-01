@@ -1,6 +1,6 @@
 # Document Manager SaaS (Aconex‑like Prototype)
 
-This repository contains a prototype web application inspired by Oracle Aconex for document control.  It is designed to run on FastAPI with no external dependencies beyond what is already available in the environment.  The application demonstrates basic document management and transmittal functionality in a multi‑organisation context.
+This repository contains a prototype web application inspired by Oracle Aconex for document control.  It is designed to run on [FastAPI](https://fastapi.tiangolo.com/) with no external dependencies beyond what is already available in the environment.  The application demonstrates basic document management and transmittal functionality in a multi‑organisation context.
 
 ## Features
 

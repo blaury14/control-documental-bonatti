@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Detalle del Documento {{ doc.doc_number }} - {{ doc.title }}</h2>
+<p><strong>Tipo:</strong> {{ doc.doc_type }}<br>
+<strong>Estado:</strong> {{ doc.status }}</p>
+
+<h3>Revisiones</h3>
+<table>
+    <thead><tr><th>Revisión</th><th>Archivo</th><th>Subido por</th><th>Fecha</th><th>Descargar</th></tr></thead>
+    <tbody>
+    {% for rev in revisions %}
+        <tr>
+            <td>{{ rev.revision }}</td>
+            <td>{{ rev.file_path | replace('../', '') }}</td>
+            <td>{{ rev.uploaded_by }}</td>
+            <td>{{ rev.uploaded_at }}</td>
+            <td><a href="/download/{{ rev.id }}">Descargar</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h3>Eventos</h3>
+<table>
+    <thead><tr><th>Tipo</th><th>Usuario</th><th>Revisión</th><th>Fecha</th><th>Notas</th></tr></thead>
+    <tbody>
+    {% for ev in events %}
+        <tr>
+            <td>{{ ev.event_type }}</td>
+            <td>{{ ev.user_name }}</td>
+            <td>{% if ev.revision_id %}{{ ev.revision_id }}{% endif %}</td>
+            <td>{{ ev.timestamp }}</td>
+            <td>{{ ev.notes }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="/organizations/{{ org_id }}/projects/{{ project_id }}/documents">Volver a documentos</a></p>
+{% endblock %}

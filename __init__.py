@@ -1,1 +1,1 @@
-# This file makes the directory a package
+# This file makes the project directory a Python package.

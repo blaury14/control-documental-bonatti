@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Usuarios de {{ org.name }}</h2>
+<table>
+    <thead><tr><th>Email</th><th>Nombre</th><th>Rol</th></tr></thead>
+    <tbody>
+    {% for u in users %}
+        <tr>
+            <td>{{ u.email }}</td>
+            <td>{{ u.name }}</td>
+            <td>{{ u.role }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p><a href="/organizations/{{ org.id }}/users/new">Crear nuevo usuario</a></p>
+{% endblock %}

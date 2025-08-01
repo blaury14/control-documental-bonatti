@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Crear proyecto en {{ org.name }}</h2>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<form method="post" action="/organizations/{{ org.id }}/projects/new">
+    <label>Nombre:</label><br>
+    <input type="text" name="name" required><br>
+    <label>Descripción:</label><br>
+    <input type="text" name="description"><br>
+    <input type="submit" value="Crear">
+</form>
+{% endblock %}

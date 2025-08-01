@@ -1,39 +1,35 @@
-# Document Manager SaaS (Aconex‑like Prototype)
+# Document Manager SaaS Prototype
 
-This repository contains a prototype web application inspired by Oracle Aconex for document control.  It is designed to run on [FastAPI](https://fastapi.tiangolo.com/) with no external dependencies beyond what is already available in the environment.  The application demonstrates basic document management and transmittal functionality in a multi‑organisation context.
+This repository contains a prototype web application for document control. It is designed as a Software‑as‑a‑Service (SaaS) style platform that allows multiple organisations to manage projects, upload documents with revision histories, and share documents via transmittals.  The application is built with **FastAPI** and uses SQLite for data storage.  It demonstrates core document management features in a multi‑organisation context without relying on any proprietary systems.
 
 ## Features
 
-* **Multi‑organisation support** – Each organisation has its own private document register.  Users belong to organisations and access only their own documents.
-* **Projects** – Administrators can create projects under their organisation.  Documents are uploaded within projects.
-* **Document register & revisions** – Upload documents with metadata and maintain revision history.  Previous versions are retained for reference.
-* **Transmittals** – Send revisions of documents to other organisations.  Transmittals automatically create or supersede documents in the recipient’s register and record events.
-* **Event log** – Each document keeps an audit trail (events) showing uploads, revisions, and transmittals.
-* **Role‑based access** – Three roles are supported: `superadmin` (global administrator), `org_admin` (organisation administrator), and `user` (regular user).  Role determines which pages and operations are available.
+* **User authentication**: Users log in with an email and password.  Sessions are stored in the database and managed via a cookie.  Roles include superadministrator, organisation administrator and regular user.
+* **Multi‑organisation support**: Each organisation has its own set of projects, users and document register.  Superadministrators can manage organisations and users across the entire system.
+* **Document register with revision history**: Documents are identified by a number and can have multiple revisions.  Each revision stores metadata (title, type, status), the file path and who uploaded it.  The current revision is tracked automatically.
+* **Transmittals**: Organisations can send one or more document revisions to another organisation using a transmittal.  Recipients receive a copy of the revisions in their register and can view and download them.  Transmittals record the sender, recipient and included revisions.
+* **Role‑based access control**: Access to routes is controlled by role.  Organisation administrators manage projects and users within their organisation, while superadministrators manage all organisations.  Regular users can view and upload documents within their own organisation.
+* **Event log**: Each document keeps a record of events such as uploads, downloads and transmittal sends/receives.  Events include the user, timestamp and a description of the action.
 
-## Running Locally
+## Running locally
 
-1. Ensure Python 3.11 is installed.  Clone this repository and change into its directory:
+To run the application on your local machine, you need Python 3.11 or later.  Install the dependencies listed in `requirements.txt` and start the server with Uvicorn:
 
-   ```bash
-   git clone <repo-url>
-   cd document_manager
-   ```
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn document_manager.main:app --reload
+```
 
-2. Start the server using `uvicorn` (already included in this environment):
+Navigate to `http://127.0.0.1:8000` in your browser to access the app.  A default superadmin account is created on startup (email: `admin@example.com`, password: `admin`), which you can use to log in and set up your own organisations and users.
 
-   ```bash
-   python -m uvicorn document_manager.main:app --reload
-   ```
+## Deployment to Vercel or DigitalOcean
 
-3. Open your browser at `http://127.0.0.1:8000`.  On the first run the app will create a default super administrator with email `admin@example.com` and password `admin`.  Please log in using these credentials and immediately create your own organisations, users and projects.
+The repository includes a `vercel.json` file and an `api/index.py` entrypoint for deploying to Vercel.  When you import this project into Vercel, select **Other** as the framework preset and set the root directory to the root of the repository.  Vercel will install the dependencies and expose the FastAPI application as a serverless function.
 
-4. When deploying to a cloud provider such as Vercel or DigitalOcean, ensure that the `uploads` directory and SQLite database (`database.db`) persist between restarts.  For production use you should replace the SQLite database with a managed service such as PostgreSQL and use object storage (e.g. DigitalOcean Spaces) for file uploads.
-
-## Security Notice
-
-This prototype is intended as a learning tool and is **not production ready**.  Passwords are hashed using salted SHA256 but there is no password reset functionality.  Session management uses plain session IDs stored in a database.  Additional hardening (HTTPS, CSRF protection, more robust authentication) is required before exposing this application to the public.
+For DigitalOcean, you can deploy the application on an App Platform or Droplet by running Uvicorn and ensuring persistent storage for the database and uploads.  Consider switching to a managed database (e.g. PostgreSQL) and object storage (e.g. Spaces) for production use.
 
 ## License
 
-This project is provided under the MIT License.  See `LICENSE` for details.
+This project is licensed under the MIT license.  See the `LICENSE` file for details.

@@ -1,1 +1,1 @@
-from main import app
+from document_manager.main import app
