@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Transmittals</h2>
+<table>
+    <thead><tr><th>Número</th><th>Descripción</th><th>Emisor</th><th>Receptor</th><th>Fecha</th><th>Acciones</th></tr></thead>
+    <tbody>
+    {% for t in transmittals %}
+        <tr>
+            <td>{{ t.transmittal_number }}</td>
+            <td>{{ t.description }}</td>
+            <td>{{ t.sender_org_id }}</td>
+            <td>{{ t.recipient_org_id }}</td>
+            <td>{{ t.created_at }}</td>
+            <td><a href="/transmittals/{{ t.id }}">Ver</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if user.role in ['superadmin','org_admin'] %}
+<p><a href="/transmittals/new">Crear nuevo transmittal</a></p>
+{% endif %}
+{% endblock %}

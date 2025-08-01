@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Subir Documento</h2>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<form method="post" enctype="multipart/form-data" action="/organizations/{{ org_id }}/projects/{{ project.id }}/documents/new">
+    <label>Número de documento:</label><br>
+    <input type="text" name="doc_number" required><br>
+    <label>Título:</label><br>
+    <input type="text" name="title" required><br>
+    <label>Tipo:</label><br>
+    <input type="text" name="doc_type"><br>
+    <label>Estado:</label><br>
+    <input type="text" name="status_field"><br>
+    <label>Revisión:</label><br>
+    <input type="text" name="revision" value="1" required><br>
+    <label>Archivo:</label><br>
+    <input type="file" name="file" required><br><br>
+    <input type="submit" value="Subir">
+</form>
+{% endblock %}

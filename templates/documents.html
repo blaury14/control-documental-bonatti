@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Documentos del proyecto {{ project.name }}</h2>
+<table>
+    <thead><tr><th>Número</th><th>Título</th><th>Tipo</th><th>Estado</th><th>Revisión</th><th>Acciones</th></tr></thead>
+    <tbody>
+    {% for d in documents %}
+        <tr>
+            <td>{{ d.doc_number }}</td>
+            <td>{{ d.title }}</td>
+            <td>{{ d.doc_type }}</td>
+            <td>{{ d.status }}</td>
+            <td>{{ rev_labels.get(d.id, '') }}</td>
+            <td>
+                <a href="/organizations/{{ org_id }}/projects/{{ project.id }}/documents/{{ d.id }}">Ver</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p><a href="/organizations/{{ org_id }}/projects/{{ project.id }}/documents/new">Subir documento</a></p>
+{% endblock %}

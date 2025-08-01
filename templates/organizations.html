@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Organizaciones</h2>
+<table>
+    <thead><tr><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr></thead>
+    <tbody>
+    {% for org in organizations %}
+        <tr>
+            <td>{{ org.name }}</td>
+            <td>{{ org.description }}</td>
+            <td>
+                <a href="/organizations/{{ org.id }}/projects">Proyectos</a> |
+                <a href="/organizations/{{ org.id }}/users">Usuarios</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p><a href="/organizations/new">Crear nueva organización</a></p>
+{% endblock %}

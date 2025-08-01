@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Proyectos de {{ org.name }}</h2>
+<table>
+    <thead><tr><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr></thead>
+    <tbody>
+    {% for p in projects %}
+        <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.description }}</td>
+            <td>
+                <a href="/organizations/{{ org.id }}/projects/{{ p.id }}/documents">Documentos</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if user.role in ['superadmin', 'org_admin'] %}
+<p><a href="/organizations/{{ org.id }}/projects/new">Crear nuevo proyecto</a></p>
+{% endif %}
+{% endblock %}

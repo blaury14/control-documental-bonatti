@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Bienvenido {{ user.name }}</h2>
+{% if user.role == 'superadmin' %}
+    <p>Usted es Super Administrador. Seleccione una organización para administrarla.</p>
+    <table>
+        <thead><tr><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr></thead>
+        <tbody>
+        {% for org in organizations %}
+            <tr>
+                <td>{{ org.name }}</td>
+                <td>{{ org.description }}</td>
+                <td>
+                    <a href="/organizations/{{ org.id }}/projects">Proyectos</a> |
+                    <a href="/organizations/{{ org.id }}/users">Usuarios</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="/organizations/new">Crear nueva organización</a></p>
+{% else %}
+    <p>Organización: {{ user.org_id }}</p>
+    <h3>Proyectos</h3>
+    <table>
+        <thead><tr><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr></thead>
+        <tbody>
+        {% for project in projects %}
+            <tr>
+                <td>{{ project.name }}</td>
+                <td>{{ project.description }}</td>
+                <td>
+                    <a href="/organizations/{{ user.org_id }}/projects/{{ project.id }}/documents">Documentos</a>
+                    {% if user.role in ['org_admin'] %}| <a href="/organizations/{{ user.org_id }}/projects/{{ project.id }}/documents/new">Nuevo Documento</a>{% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if user.role in ['superadmin', 'org_admin'] %}
+    <p><a href="/organizations/{{ user.org_id }}/projects/new">Crear nuevo proyecto</a></p>
+    <p><a href="/organizations/{{ user.org_id }}/users">Administrar Usuarios</a></p>
+    {% endif %}
+{% endif %}
+{% endblock %}

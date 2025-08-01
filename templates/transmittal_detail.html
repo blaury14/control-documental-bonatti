@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Detalle del Transmittal {{ trans.transmittal_number }}</h2>
+<p><strong>Descripción:</strong> {{ trans.description }}<br>
+<strong>Emisor (org):</strong> {{ trans.sender_org_id }}<br>
+<strong>Receptor (org):</strong> {{ trans.recipient_org_id }}<br>
+<strong>Fecha:</strong> {{ trans.created_at }}</p>
+
+<h3>Documentos</h3>
+<table>
+    <thead><tr><th>Documento ID</th><th>Revisión</th><th>Archivo</th><th>Acción</th></tr></thead>
+    <tbody>
+    {% for d in docs %}
+        <tr>
+            <td>{{ d.document_id }}</td>
+            <td>{{ d.revision }}</td>
+            <td>{{ d.file_path }}</td>
+            <td><a href="/download/{{ d.id }}">Descargar</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p><a href="/transmittals">Volver a transmittals</a></p>
+{% endblock %}

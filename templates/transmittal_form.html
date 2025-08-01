@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Crear Transmittal</h2>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<form method="post" action="/transmittals/new">
+    <label>Número de transmittal:</label><br>
+    <input type="text" name="trans_number" required><br>
+    <label>Descripción:</label><br>
+    <input type="text" name="description"><br>
+    <label>Organización receptora:</label><br>
+    <select name="recipient_org_id" required>
+        {% for org in orgs %}
+            <option value="{{ org.id }}">{{ org.name }}</option>
+        {% endfor %}
+    </select><br>
+    <label>Documentos a enviar:</label><br>
+    <div style="max-height:200px; overflow-y:auto; border:1px solid #ccc; padding:0.5rem;">
+    {% for d in docs %}
+        <input type="checkbox" name="selected_docs" value="{{ d.current_revision }}"> {{ d.doc_number }} - {{ d.title }} (Rev {{ d.current_revision }})<br>
+    {% endfor %}
+    </div>
+    <br>
+    <input type="submit" value="Enviar">
+</form>
+{% endblock %}

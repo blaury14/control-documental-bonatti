@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title if title else 'Gestión Documental' }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">DocManager</div>
+        {% if user %}
+        <ul class="navbar-nav">
+            <li><a href="/dashboard">Inicio</a></li>
+            {% if user.role == 'superadmin' %}
+            <li><a href="/organizations">Organizaciones</a></li>
+            {% endif %}
+            {% if user.role in ['superadmin', 'org_admin', 'user'] %}
+            <li><a href="/transmittals">Transmittals</a></li>
+            {% endif %}
+            <li><a href="/logout">Salir</a></li>
+        </ul>
+        {% endif %}
+    </nav>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
