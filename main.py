@@ -1,5 +1,6 @@
 """
 Entry point of the document management SaaS application.
+
 This FastAPI application implements a minimal but functional document control
 system inspired by Oracle Aconex. It supports multiple organisations and
 projects, document registers with revision history, transmittal of document
@@ -37,9 +38,9 @@ from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-# Use absolute import instead of relative
-import database as db
+from . import database as db
 import sqlite3  # needed for catching integrity errors
+
 
 app = FastAPI()
 
@@ -267,7 +268,7 @@ async def create_user_action(org_id: int, request: Request, user=Depends(get_cur
             role_field = "user"
         try:
             db.create_user(email, password, name_field, role_field, org_id)
-        except Exception:
+        except Exception as e:
             return templates.TemplateResponse(
                 "user_form.html",
                 {
@@ -641,7 +642,7 @@ async def create_transmittal_action(request: Request, user=Depends(get_current_u
             revision_ids,
             user["id"],
         )
-    except Exception:
+    except Exception as e:
         # On error return to form
         all_orgs = db.get_organizations()
         orgs = [o for o in all_orgs if o["id"] != user["org_id"]]
