@@ -1,6 +1,5 @@
 """
 Entry point of the document management SaaS application.
-
 This FastAPI application implements a minimal but functional document control
 system inspired by Oracle Aconex. It supports multiple organisations and
 projects, document registers with revision history, transmittal of document
@@ -38,7 +37,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from . import database as db
+import database as db
 import sqlite3  # needed for catching integrity errors
 
 
