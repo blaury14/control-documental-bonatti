@@ -37,9 +37,9 @@ from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+# Use absolute import instead of relative
 import database as db
 import sqlite3  # needed for catching integrity errors
-
 
 app = FastAPI()
 
@@ -267,7 +267,7 @@ async def create_user_action(org_id: int, request: Request, user=Depends(get_cur
             role_field = "user"
         try:
             db.create_user(email, password, name_field, role_field, org_id)
-        except Exception as e:
+        except Exception:
             return templates.TemplateResponse(
                 "user_form.html",
                 {
@@ -641,7 +641,7 @@ async def create_transmittal_action(request: Request, user=Depends(get_current_u
             revision_ids,
             user["id"],
         )
-    except Exception as e:
+    except Exception:
         # On error return to form
         all_orgs = db.get_organizations()
         orgs = [o for o in all_orgs if o["id"] != user["org_id"]]
